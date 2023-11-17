@@ -1,0 +1,70 @@
+.addloan {
+  width: 100%;
+  height: 100%;
+  padding-bottom: 20px;
+  box-sizing: border-box;
+}
+
+Form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #e6e294;
+  margin: 10px;
+  padding: 20px;
+  padding-bottom: 30px;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+
+.addloan-title {
+  margin-top: 40px;
+  margin-bottom: 10px;
+  background-color: var(--c4ta);
+  text-align: center;
+  padding: 10px;
+}
+
+.back-btn {
+  position: absolute;
+  bottom: -18px;
+  left: 20px;
+  background-color: #dd8300;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+Form label {
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #dd8300;
+}
+
+Form input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #dd8300;
+  box-sizing: border-box;
+  border-radius: 3px;
+}
+
+Form input[type="number"] {
+  border: 1px solid #351c00;
+  color: #351c00;
+}
+
+Form button.send-btn {
+  background-color: #625925;
+  color: #e6e294;
+  border: none;
+  border-radius: 3px;
+  padding: 10px;
+  margin-top: 10px;
+  cursor: pointer;
+}

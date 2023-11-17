@@ -1,0 +1,71 @@
+:root {
+  --text-color: #351c00;
+  --background: #f1eeb1d3;
+  --p1ra: #dd8300;
+  --s2da: #e6e294;
+  --t3ra: #351c00;
+  --c4ta: #625925;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  color: var(--text-color);
+  background: var(--background);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+header {
+ height: 50px;
+ background-color: var(--s2da);
+ color: var(--p1ra);
+ padding: 5px;
+ box-sizing: border-box;
+}
+
+header h1 {
+ font-size: 40px;
+ font-weight: bold;
+}
+
+
+.none-focus {
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.none-focus:active {
+  transform: scale(0.9);
+}
+
+.DetailsAdd:active {
+  transform: scale(0.9);
+}
+
+.DetailsAdd {
+  float: right;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  margin-top: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}

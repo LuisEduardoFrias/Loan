@@ -1,0 +1,67 @@
+.puchNotify-container {
+  width: 160px;
+  height: 200px;
+  position: fixed;
+  top: 3px;
+  z-index: 9;
+  left: calc(50% - 75px);
+  padding: 5px;
+  display: flex;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex-direction: column;
+  gap: 3px;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.puchNotify {
+  width: 150px;
+  height: 50px;
+  padding: 5px;
+  box-sizing: border-box;
+  border: 1px solid white;
+  border-radius: 5px 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+  animation: slide-in-blurred-tl 2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+.puchNotify-container span {
+  position: relative;
+  margin: auto;
+  font-size: 15px;
+  color: black;
+}
+
+.post {
+  background-color: var(--First);
+}
+
+.put {
+  background-color: #62de55;
+}
+
+.delete {
+  background-color: #de5555;
+}
+
+
+@keyframes slide-in-blurred-tl {
+  0% {
+    transform: translate(0px, -1000px);
+    transform-origin: 100% 0%;
+    filter: blur(60px);
+    opacity: 0;
+  }
+  100% {
+    transform-origin: 50% 50%;
+    transform-origin: 50% 50%;
+    transform: translate(0, 0) skew(0deg, 0deg);
+    filter: blur(0);
+    opacity: 1;
+  }
+}
