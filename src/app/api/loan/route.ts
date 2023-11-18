@@ -3,7 +3,7 @@ import { daj } from "daj";
 import Loan from "m/loan";
 
 export async function GET() {
-  var response = await daj.getAsync(Loan.getInstance());
+  const response = await daj.getAsync(Loan.getInstance());
   return NextResponse.json(response);
 }
 
@@ -15,18 +15,30 @@ export async function POST(request: any) {
 }
 
 export async function PUT(request) {
-  const { loan } = request.json();
+  const { loan } = await request.json();
   console.log("put");
-  const response = await daj.putAsync(loan);
 
-  return NextResponse.json({ name: "lusi" });
+  const newLoan: Loan = Loan.getInstance();
+  newLoan.mapper(loan);
+
+  const response = await daj.putAsync(newLoan);
+
+  return NextResponse.json(response);
 }
 
 export async function DELETE(request) {
-  const { loan } = request.json();
+  const { key } = await request.json();
   console.log("delete");
 
-  const response = await daj.putAsync(loan);
+  const { data } = await daj.getAsync(Loan.getInstance());
 
-  return NextResponse.json({ name: "lusi" });
+  const client = data.filter(c => c.key === key)[0];
+
+  const newLoan: Loan = Loan.getInstance();
+  newLoan.mapper(client);
+  newLoan.paid = true;
+
+  const response = await daj.putAsync(newLoan);
+
+  return NextResponse.json(response);
 }

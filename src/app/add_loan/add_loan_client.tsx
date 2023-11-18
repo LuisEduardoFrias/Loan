@@ -15,7 +15,7 @@ export default function AddLoanClient() {
 
   async function handleForm(
     data: object[],
-    setLoader: (show: booleand) => void,
+    setLoader: (show: boolean) => void,
     setNotif: (obj: INotificarion) => void,
   ) {
     const response = await handleFetch(data);

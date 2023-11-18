@@ -45,7 +45,7 @@ export default function useFetch(url: string) {
       setIsLoader(false);
       return _data;
     } catch (err) {
-      alert("catch");
+      alert("useFetch catch: " + err);
       setError({ isError: true, text: err });
     }
   };

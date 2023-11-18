@@ -9,13 +9,11 @@ import useFetch from "h/usefetch";
 import { useEffect, useState } from "react";
 
 export default function HomeClient() {
-  const [isloader, handleGetFetch] = useFetch("/loan");
+  const [isloader, handleGetFetch, handleFetch] = useFetch("/loan");
 
-  const [clients, setClient] = useState([]);
+  const [clients, setClient] = useState<Loan[]>([]);
 
-  useEffect(() => {
-    alert(clients);
-  }, [clients]);
+  useEffect(() => {}, [clients]);
 
   useEffect(function () {
     (async () => {
@@ -29,15 +27,18 @@ export default function HomeClient() {
       const { data, error } = await response.json();
 
       if (data != null) {
-        const dataArr = data.map(e => {
-          if (e.paid === false) {
-            return {
-              name: e.name,
-              date: e.mony[0].date,
-              amount: getTotalAmonut(e),
-            };
-          }
-        });
+        const dataArr = data
+          .map(e => {
+            if (e.paid === false) {
+              return {
+                key: e.key,
+                name: e.name,
+                date: e.mony[0].date,
+                amount: getTotalAmonut(e),
+              };
+            }
+          })
+          .filter(e => e !== undefined);
 
         setClient(dataArr);
       } else {
@@ -45,6 +46,21 @@ export default function HomeClient() {
       }
     })();
   }, []);
+
+  async function handleDelete(key: string) {
+    const response = await fetch(`api/loan`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ key: key }),
+    });
+
+    const response2 = await response.json();
+
+    alert(JSON.stringify(response2));
+    setClient(prev => prev.filter(c => c.key !== key));
+  }
 
   function getTotalAmonut(object: Loan) {
     return object.mony.reduce((acount, mony) => {
@@ -66,22 +82,28 @@ export default function HomeClient() {
   return (
     <>
       <div className={styles.homeContainer}>
-        {clients.map((client, i) => (
+        {clients?.map((client, i) => (
           <div key={i} className={styles.homeCard}>
-            <Link href={`/details?id=${1}`} className={styles.CardLink}>
+            <Link
+              href={`/details?id=${client?.key}`}
+              className={styles.CardLink}
+            >
               <label className={styles.cardPresentation}>
-                {TowFirstUpperCase(client.name)}
+                {TowFirstUpperCase(client?.name)}
               </label>
               <label className={styles.cardName}>
-                {FirstUpperCase(client.name)}
+                {FirstUpperCase(client?.name)}
               </label>
-              <label className={styles.cardAmoun}>RD$ {client.amount}</label>
+              <label className={styles.cardAmoun}>RD$ {client?.amount}</label>
             </Link>
             <div className={styles.cardOptions}>
               <button className={styles.cardOptionsBack}>
                 <Icon>close</Icon>
               </button>
-              <button className={styles.cardOptionsBtn}>
+              <button
+                className={styles.cardOptionsBtn}
+                onClick={_ => handleDelete(client?.key)}
+              >
                 <Icon>delete</Icon>
               </button>
               <Icon className={styles.cardOptionsIcon}>more_vert</Icon>

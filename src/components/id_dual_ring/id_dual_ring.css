@@ -34,9 +34,9 @@
   border: 6px double var(--First);
   box-sizing: border-box;
   box-shadow:
-    0 0 2px 1px #300042 inset,
-    0 0 2px 1px #300042;
-  border-color: var(--Second) transparent;
+    0 0 2px 1px var(--p1ra) inset,
+    0 0 2px 1px var(--p1ra);
+  border-color: var(--s2da) transparent;
   animation: ld-dual-ring 1.2s linear infinite;
 }
 
