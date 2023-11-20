@@ -1,7 +1,7 @@
 "use client";
 
-import Icon from "cp/icon/icon";
-import "./notification_card.css";
+import Icon from "./icon";
+import "../styles/card_notification.css";
 
 export const enum ModalType {
   notification = 0,
@@ -21,7 +21,7 @@ interface INotificationCardProps {
   onClick3?: (event: any) => void;
 }
 
-export default function NotificationCard(props: INotificationCardProps) {
+export default function CardNotification(props: INotificationCardProps) {
   const getClass: string =
     props.type === ModalType.warning
       ? "modal-content-warning"

@@ -1,65 +1,90 @@
 "use client";
 //
 import Link from "next/link";
+import LdDualRing,  { useColorLoading }  from "cp/ld_dual_ring";
 import moment from "moment";
-import Icon from "cp/icon/icon";
+import CardNotification, { ModalType } from "cp/card_notification";
+import Icon from "cp/icon";
+import { usePushNotify, TypeNotify } from "cp/push_notify";
 import styles from "./page.module.css";
-import Loan from "m//loan";
+import Loan from "m/loan";
 import useFetch from "h/usefetch";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useId } from "react";
 
-export default function HomeClient() {
-  const [isloader, handleGetFetch, handleFetch] = useFetch("/loan");
+type Remove = {
+  key: string;
+  value: boolean;
+};
 
+export default function HomeClient(): JSX.Element {
+  const [isLoading, fetchError, fetchData, getFetch] = useFetch(
+    "http://localhost:3000/api/loan",
+  );
+
+  const init = { show: false, title: "", dialog: "" };
   const [clients, setClient] = useState<Loan[]>([]);
+  const [notifyError, setNotifyError] = useState(init);
+  const [remove, setRemove] = useState<Remove[]>([]);
+  const setPushNotify = usePushNotify();
+  const uniqueId = useId();
+  useColorLoading("#351c00", "#351c00", "#dd8300");
+  // #e6e294;
 
   useEffect(() => {}, [clients]);
 
   useEffect(function () {
     (async () => {
-      const response = await fetch(`api/loan`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await getFetch();
 
-      const { data, error } = await response.json();
+      if (fetchError === null) {
+        const { data, error } = response;
 
-      if (data != null) {
-        const dataArr = data
-          .map(e => {
-            if (e.paid === false) {
-              return {
-                key: e.key,
-                name: e.name,
-                date: e.mony[0].date,
-                amount: getTotalAmonut(e),
-              };
-            }
-          })
-          .filter(e => e !== undefined);
+        if (data != null) {
+          const dataArr = data
+            .map(e => {
+              if (e.paid === false) {
+                setRemove(prev => [...prev, { key: e.key, value: false }]);
+                return {
+                  key: e.key,
+                  name: e.name,
+                  date: e.mony[0].date,
+                  amount: getTotalAmonut(e),
+                };
+              }
+            })
+            .filter(e => e !== undefined);
 
-        setClient(dataArr);
+          setClient(dataArr);
+        } else {
+          setNotifyError({ show: false, title: "Data Error", dialog: error });
+        }
       } else {
-        alert("error: " + error);
+        setNotifyError({
+          show: false,
+          title: "Fetch Error",
+          dialog: fetchError,
+        });
       }
     })();
   }, []);
 
   async function handleDelete(key: string) {
-    const response = await fetch(`api/loan`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ key: key }),
-    });
+    const response = await fetchData({ key: key }, "DELETE");
 
-    const response2 = await response.json();
+    if (fetchError === null) {
+      const { data, error } = response;
 
-    alert(JSON.stringify(response2));
-    setClient(prev => prev.filter(c => c.key !== key));
+      if (data != null) {
+        setPushNotify({
+          keys: uniqueId,
+          text: "Prestamo a sido pagado",
+          type: TypeNotify.delete,
+        });
+        setClient(prev => prev.filter(c => c.key !== key));
+      } else {
+        setNotifyError({ show: false, title: "Data Error", dialog: error });
+      }
+    }
   }
 
   function getTotalAmonut(object: Loan) {
@@ -79,34 +104,77 @@ export default function HomeClient() {
     }, 0);
   }
 
+  function getRemove(client: Loan) {
+    return remove.filter(r => r.key === client.key)[0]?.value;
+  }
+
   return (
     <>
+      <CardNotification
+        show={notifyError.show}
+        type={ModalType.error}
+        title={notifyError.title}
+        dialog={notifyError.dialog}
+        onClick3={_ => {}}
+      />
+
+      <LdDualRing show={isLoading} />
+
       <div className={styles.homeContainer}>
         {clients?.map((client, i) => (
           <div key={i} className={styles.homeCard}>
             <Link
-              href={`/details?id=${client?.key}`}
-              className={styles.CardLink}
+              href={!getRemove(client) ? `/details?id=${client?.key}` : ""}
+              className={
+                getRemove(client) ? styles.CardLinkDelete : styles.CardLink
+              }
             >
-              <label className={styles.cardPresentation}>
-                {TowFirstUpperCase(client?.name)}
-              </label>
+              <div
+                className={
+                  getRemove(client)
+                    ? styles.cardPresentationDelete
+                    : styles.cardPresentation
+                }
+              >
+                {!getRemove(client) ? (
+                  <label>{TowFirstUpperCase(client?.name)}</label>
+                ) : (
+                  <button
+                    className={styles.cardOptionsBtn}
+                    onClick={_ => handleDelete(client?.key)}
+                  >
+                    <Icon>delete</Icon>
+                  </button>
+                )}
+              </div>
               <label className={styles.cardName}>
                 {FirstUpperCase(client?.name)}
               </label>
               <label className={styles.cardAmoun}>RD$ {client?.amount}</label>
             </Link>
+
             <div className={styles.cardOptions}>
-              <button className={styles.cardOptionsBack}>
-                <Icon>close</Icon>
-              </button>
               <button
-                className={styles.cardOptionsBtn}
-                onClick={_ => handleDelete(client?.key)}
+                className={styles.cardOptionsIcon}
+                onClick={_ => {
+                  setRemove(
+                    remove.map(item => {
+                      if (item.key === client.key) {
+                        return { ...item, value: !getRemove(client) };
+                      } else {
+                        item.value = false;
+                      }
+                      return item;
+                    }),
+                  );
+                }}
               >
-                <Icon>delete</Icon>
+                {!getRemove(client) ? (
+                  <Icon>more_vert</Icon>
+                ) : (
+                  <Icon>close</Icon>
+                )}
               </button>
-              <Icon className={styles.cardOptionsIcon}>more_vert</Icon>
             </div>
           </div>
         ))}

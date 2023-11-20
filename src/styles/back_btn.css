@@ -1,0 +1,8 @@
+.backBtn {
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+.backBtn:active {
+  transform: scale(0.9);
+}

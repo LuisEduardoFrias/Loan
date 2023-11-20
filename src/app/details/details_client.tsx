@@ -2,20 +2,21 @@
 //
 import { useEffect, useState, useRef } from "react";
 import styles from "./page.module.css";
-import Icon from "cp/icon/icon";
+import Icon from "cp/icon";
 import moment from "moment";
 import Loan from "m/loan";
 import Mony from "m/mony";
-import Form from "cp/form/form";
-import BackButton from "cp/back_button/back_button";
+import Form from "cp/form";
+import BackButton from "cp/back_btn";
 import useFetch from "h/usefetch";
-import useDateTime from "h/usedatetime";
 
 export default function DetailsClient({ id }: string) {
-  const [isloader, handleFetch, handleGetFetch] = useFetch("/loan");
+  const [isLoading, fetchError, fetchData, getFetch] = useFetch(
+    "http://localhost:3000/api/loan",
+  );
+
   const [showForm, setShowFrom] = useState(false);
   const [state, setState] = useState<Loan>(null);
-  const [date, time] = useDateTime();
 
   useEffect(() => {
     //alert(JSON.stringify(state));
@@ -23,7 +24,7 @@ export default function DetailsClient({ id }: string) {
 
   useEffect(() => {
     (async () => {
-      const response = await handleGetFetch();
+      const response = await getFetch();
       const { data, error } = response;
       setState(data.filter(e => e.key === id)[0]);
     })();
@@ -38,8 +39,8 @@ export default function DetailsClient({ id }: string) {
 
     newState.mony.push(new Mony(data.amount));
 
-    const response = await handleFetch({ loan: newState }, "PUT");
-    setLoader(isloader);
+    const response = await fetchData({ loan: newState }, "PUT");
+    setLoader(isLoading);
 
     setState(newState);
 
@@ -57,14 +58,26 @@ export default function DetailsClient({ id }: string) {
 
   return (
     <div className={styles.DetailsClient}>
-      <div className={styles.DetailsClientData}>
-        <label htmlFor='name' className={styles.nameL}>
-          Nombre:
-        </label>
-        <span className={styles.name} id='name'>
-          {state && state?.name}
-        </span>
+      <div className={styles.DetailsClientHeader}>
+        <div className={styles.DetailsClientData}>
+          <label htmlFor='name' className={styles.nameL}>
+            Nombre:
+          </label>
+          <span className={styles.name} id='name'>
+            {state && state?.name}
+          </span>
+        </div>
+
+        <div className={styles.DetailsClientData}>
+          <label htmlFor='name' className={styles.nameL}>
+            Pagar redito
+          </label>
+          <button className={styles.payredicts}>
+            <Icon>paid</Icon>
+          </button>
+        </div>
       </div>
+
       <Table styles={styles} data={state} />
       <AddAmount
         showForm={showForm}

@@ -20,22 +20,69 @@
   cursor: pointer;
 }
 
+.DetailsClientHeader {
+ display: grid;
+ grid-template-columns: repeat(2, 1fr);
+ grid-template-rows: 50px;
+}
+
 .DetailsClientData {
-  display: grid;
-  grid-template-columns: 90px repeat(3, 1fr);
-  grid-template-rows: 50px;
-  grid-template-areas: "labelName valueName . date";
+  width: 100%;
+  height: 100%;
+  display: flex;
+  gap: 5px;
+  grid-template-areas: "labelName valueName";
 }
 
 .nameL {
   grid-area: labelName;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 15px;
+  justify-self: center;
+  align-self: center;
 }
 
 .name {
   grid-area: valueName;
   font-size: 20px;
+  justify-self: center;
+  align-self: center;
+}
+
+.payredicts {
+ border-width: 7px;
+ border-style: solid;
+ border-top-color: var(--p1ra);
+ border-left-color: var(--p1ra);
+ border-right-color: var(--s2da);
+ border-bottom-color: var(--s2da);
+ width: 30px;
+ height: 30px;
+ border-radius: 50%;
+ background-color: transparent;
+ user-select: none;
+ margin-left: 20px;
+ margin-top: 10px;
+ -webkit-tap-highlight-color: transparent;
+ z-index: 8;
+ display: flex;
+ justify-content: center;
+ align-items: center;
+}
+
+.payredicts:active {
+ transform: scale(0.8);
+}
+
+.payredicts::before {
+ content: " ";
+ background-color: var(--t3ra);
+ width: 25px;
+ height: 3px;
+ position: absolute;
+ margin-top: 35px;
+ border-radius: 1.5px;
+ z-index: 0;
 }
 
 .tg {
@@ -51,7 +98,7 @@
   background-color: #fff;
   border-color: #aaa;
   border-style: solid;
-  border-width: 0px;
+  border-width: 0;
   color: #333;
   font-family: Arial, sans-serif;
   font-size: 14px;
@@ -63,7 +110,7 @@
   background-color: #f38630;
   border-color: #aaa;
   border-style: solid;
-  border-width: 0px;
+  border-width: 0;
   color: #fff;
   font-family: Arial, sans-serif;
   font-size: 14px;
@@ -158,3 +205,4 @@
   box-sizing: border-box;
   cursor: pointer;
 }
+

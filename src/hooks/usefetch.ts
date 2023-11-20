@@ -1,54 +1,64 @@
-"use client";
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function useFetch(url: string) {
-  const init = { isError: false, text: "" };
+  const [isLoading, setIsLoading] = useState(false);
+  const [fetchError, setFetchError] = useState(null);
 
-  const [isloader, setIsLoader] = useState(false);
-  const [error, setError] = useState(init);
+  useEffect(() => {
+    // alert("effe: " + isLoading);
+  }, [isLoading]);
 
-  const handleFetch = async (data: object, method?: string) => {
+  useEffect(() => {
+    // alert("effe: " + fetchError);
+  }, [fetchError]);
+
+  const fetchData = async (
+    data: object,
+    method?: string,
+  ): Promise<object | undefined> => {
     try {
-      setIsLoader(true);
+      setIsLoading(true);
 
-      const response = await fetch(`api/${url}`, {
-        method: method ?? "POST",
+      const response = await fetch(new URL(url), {
+        method: method?.toUpperCase() ?? "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
       });
 
-      const _data = await response.json();
+      const resp = await response.json();
 
-      setIsLoader(false);
-      return _data;
+      setIsLoading(false);
+      return resp;
     } catch (err) {
-      setError({ isError: true, text: err });
+      setFetchError(err);
+      setIsLoading(false);
+      console.log("useFetch error: " + err);
     }
   };
 
-  const handleGetFetch = async () => {
+  const getFetch = async (): Promise<object | undefined> => {
     try {
-      setIsLoader(true);
+      setIsLoading(true);
 
-      const response = await fetch(`api/${url}`, {
+      const response = await fetch(new URL(url), {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
       });
 
-      const _data = await response.json();
+      const resp = await response.json();
 
-      setIsLoader(false);
-      return _data;
+      setIsLoading(false);
+      return resp;
     } catch (err) {
-      alert("useFetch catch: " + err);
-      setError({ isError: true, text: err });
+      setFetchError(err);
+      setIsLoading(false);
+      console.log("useFetch error: " + err);
     }
   };
 
-  return [isloader, handleFetch, handleGetFetch, error];
+  return [isLoading, fetchError, fetchData, getFetch];
 }

@@ -1,8 +1,8 @@
 "use client";
 //
 import React, { useState, useEffect, useRef } from "react";
-import Icon from "cp/icon/icon";
-import "./push_notify.css";
+import Icon from "./icon";
+import "../styles/push_notify.css";
 
 export enum TypeNotify {
   post,
@@ -10,7 +10,7 @@ export enum TypeNotify {
   delete,
 }
 
-interface IPushNotifyProps {
+export interface IPushNotify {
   keys: string;
   text: string;
   type: TypeNotify;
@@ -21,16 +21,16 @@ interface ICallBack {
 }
 
 // let timer: number = 10000;
-let _subscriber: object = null;
+let _subscriber: (value: IPushNotify) => void;
 
 export default function PushNotify({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [notify, setNotify] = useState<IPushNotifyProps[]>([]);
+  const [notify, setNotify] = useState<IPushNotify[]>([]);
 
-  _subscriber = (obj: IPushNotifyProps) => {
+  _subscriber = (obj: IPushNotify) => {
     setNotify(prevNotify => [...prevNotify, obj]);
   };
 
@@ -51,11 +51,11 @@ export default function PushNotify({
   );
 }
 
-function Notify({ keys, text, type, callback }: IPushNotifyProps & ICallBack) {
+function Notify({ keys, text, type, callback }: IPushNotify & ICallBack) {
   //
   useEffect(() => {
     const timer = setTimeout(() => {
-      callback(keys);
+      callback && callback(keys);
     }, 5000);
     return () => clearTimeout(timer);
   }, []);
@@ -84,8 +84,9 @@ function Notify({ keys, text, type, callback }: IPushNotifyProps & ICallBack) {
 
 export function usePushNotify() {
   //
-  const [pushNotifyObject, setPushNotifyObject] =
-    useState<IPushNotifyProps | null>(null);
+  const [pushNotifyObject, setPushNotifyObject] = useState<IPushNotify | null>(
+    null,
+  );
 
   useEffect(() => {
     if (pushNotifyObject) {
@@ -93,5 +94,5 @@ export function usePushNotify() {
     }
   }, [pushNotifyObject]);
 
-  return (obj: IPushNotifyProps) => setPushNotifyObject(obj);
+  return (obj: IPushNotify) => setPushNotifyObject(obj);
 }

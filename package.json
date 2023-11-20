@@ -12,6 +12,7 @@
     "daj": "github:LuisEduardoFrias/DaJ",
     "moment": "^2.29.4",
     "next": "13.5.5",
+    "r-packages": "file:../r-packages",
     "react": "^18",
     "react-dom": "^18"
   },

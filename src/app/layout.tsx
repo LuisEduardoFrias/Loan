@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 //import { Inter } from 'next/font/google'
-import PushNotify from "cp/push_notify/push_notify";
+import PushNotify from "cp/push_notify";
 import "./globals.css";
 
 //const inter = Inter({ subsets: ['latin'] })
@@ -15,6 +15,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+
   return (
     <html lang='en'>
       <head>
@@ -24,10 +25,12 @@ export default function RootLayout({
         />
       </head>
       <body className={"inter.className"}>
-      <header>
-      <h1>Prestamos</h1>
-      </header>
-        <PushNotify>{children}</PushNotify>
+        <PushNotify>
+          <header>
+            <h1>Prestamos</h1>
+          </header>
+          {children}
+        </PushNotify>
       </body>
     </html>
   );

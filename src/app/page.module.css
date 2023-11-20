@@ -23,6 +23,22 @@
   display: flex;
 }
 
+.CardLinkDelete {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border-radius: 5px 5px;
+  background-color: var(--p1ra);
+  display: grid;
+  grid-template-columns: 50px 1fr 20px;
+  grid-template-rows: 1fr 1fr;
+  gap: 10px;
+  grid-template-areas: "prese name option" "prese amoun option";
+  font-weight: bold;
+  user-select: none;
+  transition: background-color 1s ease-in-out;
+}
+
 .CardLink {
   width: 100%;
   height: 100%;
@@ -34,10 +50,26 @@
   grid-template-areas: "prese name option" "prese amoun option";
   font-weight: bold;
   user-select: none;
+  transition: background-color 1s ease-in-out;
 }
 
 .homeCard:active {
   background-color: #f1eeb1d3;
+}
+
+.cardPresentationDelete {
+  grid-area: prese;
+  background-color: var(--s2da);
+  border-radius: 50% 50%;
+  width: 70px;
+  height: 70px;
+  font-size: 25px;
+  margin: 5px 0 0 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 1s ease-in-out;
+  transition: opacity 0.5s ease-in-out;
 }
 
 .cardPresentation {
@@ -50,6 +82,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: background-color 1s ease-in-out;
+  transition: opacity 0.5s ease-in-out;
 }
 
 .cardName {
@@ -74,66 +108,35 @@
   justify-content: center;
   align-items: center;
   background-color: transparent;
-  width: 30px;
+  width: 50px;
   height: 100%;
   border: none;
-  transition: background-color 2.5s ease;
+  transition: background-color 2.5s ease-in-out;
   transition: width 1s ease;
   display: flex;
   justify-content: space-evenly;
 }
 
 .cardOptionsBtn {
-  display: none;
   background-color: transparent;
-  box-shadow: 0 0 2px 1px var(--c4ta);
   height: 40px;
   width: 40px;
-  border-radius: 5px;
-}
-
-.cardOptionsBack {
-  display: none;
-  background-color: transparent;
-  box-shadow: 0 0 2px 1px var(--c4ta);
-  height: 40px;
-  width: 40px;
-  border-radius: 5px;
+  border: none;
 }
 
 .cardOptionsIcon {
-  display: block;
+  user-select: none;
+  border: none;
+  background-color: transparent;
+  transition: opacity 0.5s ease-in-out;
 }
 
-/*------------------------------*/
-
-.cardOptions:hover .cardOptionsBtn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.cardOptions:hover .cardOptionsBack {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.cardOptions:hover .cardOptionsIcon {
-  display: none;
-}
-
-.cardOptions:hover {
-  background-color: #ff00009d;
-  width: 100%;
-  height: 100%;
-}
 /*------------------------------*/
 
 .bottonAdd {
   position: fixed;
   bottom: 10px;
-  right: 10px;
+  right: 50px;
   z-index: 5;
   width: 60px;
   height: 60px;

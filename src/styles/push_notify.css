@@ -1,6 +1,6 @@
 .puchNotify-container {
   width: 160px;
-  height: 200px;
+  max-height: 200px;
   position: fixed;
   top: 3px;
   z-index: 9;
@@ -38,7 +38,7 @@
 }
 
 .post {
-  background-color: var(--First);
+  background-color: #0069ff;
 }
 
 .put {
@@ -53,12 +53,11 @@
 @keyframes slide-in-blurred-tl {
   0% {
     transform: translate(0px, -1000px);
-    transform-origin: 100% 0%;
+    transform-origin: 100% 0;
     filter: blur(60px);
     opacity: 0;
   }
   100% {
-    transform-origin: 50% 50%;
     transform-origin: 50% 50%;
     transform: translate(0, 0) skew(0deg, 0deg);
     filter: blur(0);

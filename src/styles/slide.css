@@ -1,0 +1,13 @@
+.container-slide {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: scroll;
+}
+
+.link-img {
+  flex: 1 0 auto;
+  margin: 0 50px;
+  background-color: red;
+  width: 500px;
+  height: 500px;
+}
